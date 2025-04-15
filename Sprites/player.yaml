@@ -3,17 +3,119 @@ sprite:
   frameWidth: 64
   frameHeight: 64
   frameTime: 120
+  animations:
+    walk_down:
+      row: 0
+      frames: 6
+      collisionRects:
+        - cx: 25
+          cy: 23
+          cw: 13
+          ch: 21
+        - cx: 25
+          cy: 21
+          cw: 13
+          ch: 23
+        - cx: 25
+          cy: 22
+          cw: 13
+          ch: 22
+        - cx: 26
+          cy: 23
+          cw: 13
+          ch: 21
+        - cx: 26
+          cy: 21
+          cw: 13
+          ch: 23
+        - cx: 26
+          cy: 22
+          cw: 13
+          ch: 22
 
-animations:
-  walk_down:
-    row: 0
-    frames: 6
-  walk_left:
-    row: 1
-    frames: 6
-  walk_right:
-    row: 2
-    frames: 6
-  walk_up:
-    row: 3
-    frames: 6
+    walk_left:
+      row: 1
+      frames: 6
+      collisionRects:
+        - cx: 26
+          cy: 22
+          cw: 12
+          ch: 22
+        - cx: 26
+          cy: 20
+          cw: 12
+          ch: 24
+        - cx: 26
+          cy: 21
+          cw: 12
+          ch: 23
+        - cx: 26
+          cy: 22
+          cw: 12
+          ch: 22
+        - cx: 26
+          cy: 21
+          cw: 12
+          ch: 23
+        - cx: 26
+          cy: 20
+          cw: 12
+          ch: 24
+
+    walk_right:
+      row: 2
+      frames: 6
+      collisionRects:
+        - cx: 26
+          cy: 22
+          cw: 12
+          ch: 22
+        - cx: 26
+          cy: 20
+          cw: 12
+          ch: 24
+        - cx: 26
+          cy: 21
+          cw: 12
+          ch: 23
+        - cx: 26
+          cy: 22
+          cw: 12
+          ch: 22
+        - cx: 26
+          cy: 21
+          cw: 12
+          ch: 23
+        - cx: 26
+          cy: 20
+          cw: 12
+          ch: 24
+
+    walk_up:
+      row: 3
+      frames: 6
+      collisionRects:
+        - cx: 25
+          cy: 22
+          cw: 13
+          ch: 22
+        - cx: 26
+          cy: 20
+          cw: 13
+          ch: 24
+        - cx: 26
+          cy: 21
+          cw: 13
+          ch: 23
+        - cx: 26
+          cy: 22
+          cw: 13
+          ch: 22
+        - cx: 26
+          cy: 20
+          cw: 13
+          ch: 24
+        - cx: 26
+          cy: 21
+          cw: 13
+          ch: 23

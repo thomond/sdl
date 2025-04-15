@@ -36,6 +36,14 @@ public:
         }
     }
 
+    std::string getCurrentAction(){
+        return currentAction;
+    }
+
+    int getCurrentFrame(){
+        return currentFrame;
+    }
+
     void update(Uint32 now) {
         if (!playing || currentAction.empty()) return;
 
@@ -61,6 +69,7 @@ public:
 
     void setFrameTime(Uint32 ms) { frameTime = ms; }
     void setPlaying(bool play) { playing = play; }
+    SDL_Renderer * getRenderer() { return renderer;}
 
 private:
     struct ActionInfo {

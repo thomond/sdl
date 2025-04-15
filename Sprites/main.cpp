@@ -8,16 +8,6 @@ int main() {
       SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
   Character * character = Character::createFromYaml(renderer, "player.yaml");
-  
-  AnimatedSprite sprite(renderer, "Unarmed_Walk_full.png", 64, 64);
-  Character character(sprite);
-
-  sprite.addAction("walk_down", 0, 6);  // row 0, 4 frames
-  sprite.addAction("walk_left", 1, 6);  // row 1, 6 frames
-  sprite.addAction("walk_right", 2, 6); // row 2, 8 frames
-  sprite.addAction("walk_up", 3, 6); // row 2, 8 frames
-  sprite.setAction("walk_down");
-  sprite.setFrameTime(120); // ms per frame
 
   bool running = true;
   SDL_Event e;
@@ -27,7 +17,7 @@ int main() {
       if (e.type == SDL_QUIT)
         running = false;
       if (e.type == SDL_KEYDOWN) {
-        character.handleInput(e.key.keysym.sym);
+        character->handleInput(e.key.keysym.sym);
         switch (e.key.keysym.sym) {
         case SDLK_q:
           running = false;
@@ -36,11 +26,12 @@ int main() {
       }
     }
 
-    character.update(now);
+    character->update(now);
 
-    SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
+    
     SDL_RenderClear(renderer);
-    character.draw();
+    character->draw();
+    SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
     SDL_RenderPresent(renderer);
   }
 
