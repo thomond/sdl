@@ -1,0 +1,19 @@
+sprite:
+  image: Unarmed_Walk_full.png
+  frameWidth: 64
+  frameHeight: 64
+  frameTime: 120
+
+animations:
+  walk_down:
+    row: 0
+    frames: 6
+  walk_left:
+    row: 1
+    frames: 6
+  walk_right:
+    row: 2
+    frames: 6
+  walk_up:
+    row: 3
+    frames: 6
