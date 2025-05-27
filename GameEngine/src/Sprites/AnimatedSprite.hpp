@@ -5,19 +5,16 @@
 #include <vector>
 #include <unordered_map>
 #include <stdexcept>
-class AnimatedSprite {
+#include "../IRenderable.hpp"
+#include "../Renderer.hpp"
+class AnimatedSprite  :IRenderable {
 public:
-    AnimatedSprite(SDL_Renderer* renderer, const std::string& path,
+    AnimatedSprite(const std::string& path,
                    int frameWidth, int frameHeight)
-        : renderer(renderer), frameWidth(frameWidth), frameHeight(frameHeight),
+        : frameWidth(frameWidth), frameHeight(frameHeight),
           currentFrame(0), frameTime(100), lastUpdate(0), playing(true)
     {
-        SDL_Surface* surface = IMG_Load(path.c_str());
-        if (!surface) throw std::runtime_error(IMG_GetError());
-
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
-        if (!texture) throw std::runtime_error(SDL_GetError());
+        texture = Renderer::getTextureFromImage(path);
     }
 
     ~AnimatedSprite() {
@@ -53,7 +50,7 @@ public:
         }
     }
 
-    void draw(int x, int y) {
+    void draw(SDL_Renderer* renderer, SDL_Point loc) {
         if (currentAction.empty()) return;
 
         ActionInfo& action = actions[currentAction];
@@ -63,13 +60,12 @@ public:
             frameWidth,
             frameHeight
         };
-        SDL_Rect dst = { x, y, frameWidth, frameHeight };
+        SDL_Rect dst = { loc.x, loc.y, frameWidth, frameHeight };
         SDL_RenderCopy(renderer, texture, &src, &dst);
     }
 
     void setFrameTime(Uint32 ms) { frameTime = ms; }
     void setPlaying(bool play) { playing = play; }
-    SDL_Renderer * getRenderer() { return renderer;}
 
 private:
     struct ActionInfo {
@@ -77,7 +73,6 @@ private:
         int frameCount;
     };
 
-    SDL_Renderer* renderer;
     SDL_Texture* texture;
     int frameWidth, frameHeight;
     int currentFrame;

@@ -1,0 +1,19 @@
+hitboxes:
+  hitbox:
+    action: "stop"
+    name: "wall"
+    id: 0
+    rects:
+    - { x: 3, y: 0, w: 3, h: 1 }
+    - { x: 3, y: 1, w: 1, h: 1 }
+    - { x: 3, y: 2, w: 1, h: 1 }
+    - { x: 3, y: 3, w: 3, h: 1 }
+  hitbox:
+    action: "enemy"
+    name: "player"
+    id: 1
+    rects:
+    - { x: 3, y: 0, w: 3, h: 1 }
+    - { x: 3, y: 1, w: 1, h: 1 }
+    - { x: 3, y: 2, w: 1, h: 1 }
+    - { x: 3, y: 3, w: 3, h: 1 }

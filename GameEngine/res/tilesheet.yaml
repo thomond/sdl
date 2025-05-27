@@ -1,0 +1,16 @@
+tilesheet:
+  image: res/tilesheet.png
+  frameWidth: 32
+  frameHeight: 32
+  frameTime: 120
+  tiles:
+    player:
+      id: 1
+      row: 0
+      col: 0
+      hitbox_id: 1
+    box:
+      id: 2
+      row: 0
+      col: 1
+      hitbox_id: 0

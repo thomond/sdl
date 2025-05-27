@@ -1,12 +1,12 @@
 #include "AnimatedSprite.hpp"
 #include <yaml-cpp/yaml.h>
-class Character {
+#include "../IRenderable.hpp"
+class Character : public IRenderable {
 public:
     Character(AnimatedSprite* sprite)
-        : sprite(sprite), x(0), y(0), speed(2) {}
+        : sprite(sprite), x(100), y(100),dx(0),dy(0), speed(2) {}
 
     void handleInput(const int code) {
-        int dx = 0, dy = 0;
         switch (code) {
             case SDLK_d:
             sprite->setAction("walk_right"); dx = speed;
@@ -21,24 +21,41 @@ public:
             sprite->setAction("walk_down"); dy = speed;
             break;
         }
+    }
 
-        x += dx;
-        y += dy;
+    bool willIntersect(SDL_Rect * boundingBox){
+        SDL_Rect deltaRect = getGlobalBoundingBox() + SDL_Point{dx , dy};// {currentBoundingBox.x+dx ,currentBoundingBox.y+dy ,currentBoundingBox.w, currentBoundingBox.h};
+        if(intersects(deltaRect , *boundingBox)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    void resetDelta(){
+        dx = 0, dy = 0;
     }
 
     void update(Uint32 now) {
         sprite->update(now);
-        currentBoundingBox = getBoundingBoxFrame(sprite->getCurrentAction(), sprite->getCurrentFrame());
+        x += dx;
+        y += dy;
+        dx = 0, dy = 0;// reset delta
     }
 
-    void draw() {
-        sprite->draw(x, y);
-        SDL_SetRenderDrawColor(sprite->getRenderer(), 255, 255, 255, 128); // Set render to white to display collision rects
-        SDL_RenderDrawRect(sprite->getRenderer(), new SDL_Rect({ currentBoundingBox.x+x ,currentBoundingBox.y+y ,currentBoundingBox.w, currentBoundingBox.h}) );
+    void draw(SDL_Renderer * renderer, SDL_Point) {
+        sprite->draw(renderer, {x,y});
+        #if defined DEBUG
+        SDL_Rect currentBoundingBox =  getCurrentBoundingBox();
+        SDL_Rect debugRect = { currentBoundingBox.x + x, currentBoundingBox.y + y, currentBoundingBox.w, currentBoundingBox.h };
+
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 128); // Set render to white to display collision rects
+        SDL_RenderDrawRect(renderer, &debugRect );
+        #endif
     }
 
 
-    static Character* createFromYaml(SDL_Renderer *renderer, const std::string& yamlPath) {
+    static Character* createFromYaml(const std::string& yamlPath) {
         YAML::Node config = YAML::LoadFile(yamlPath);
         auto spriteNode = config["sprite"];
         if (!spriteNode) throw std::runtime_error("Missing 'sprite' section");
@@ -49,7 +66,7 @@ public:
         int frameTime = spriteNode["frameTime"].as<int>();
 
         
-        AnimatedSprite* sprite = new AnimatedSprite(renderer, image, frameW, frameH);
+        AnimatedSprite* sprite = new AnimatedSprite(image, frameW, frameH);
         Character * ch = new Character(sprite);
 
         sprite->setFrameTime(frameTime);
@@ -64,7 +81,7 @@ public:
             sprite->addAction(name, row, frames);
         
 
-            YAML::Node rects = it->second["BoundingBoxs"];
+            YAML::Node rects = it->second["BoundingBoxes"];
             if (rects && rects.IsSequence()) {
                 for (size_t frame = 0; frame < rects.size(); ++frame) {
                     auto rect = rects[frame];
@@ -86,18 +103,24 @@ public:
     }
 
     void addBoundingBox(std::string name, int frame, SDL_Rect r){
-        BoundingBoxes[name][frame] = r;
+        boundingBoxes[name][frame] = r;
     }
 
-    SDL_Rect getBoundingBoxFrame(std::string name, int frame){
-        return BoundingBoxes[name][frame];
+
+    // Returns the bounding box in absolute co-ords
+    SDL_Rect getGlobalBoundingBox(){
+        return getCurrentBoundingBox() + SDL_Point{x,y};
     }
 
 private:
     AnimatedSprite* sprite;
-    int x, y, speed;
+    // Returns the current action and frame relative bounding box
+    SDL_Rect getCurrentBoundingBox(){
+        return boundingBoxes[sprite->getCurrentAction()][sprite->getCurrentFrame()];
+    }
+    int x, y, dx,dy, speed;
 
     // Ordered map for Ani actions pointing to another map 
-    std::unordered_map<std::string, std::unordered_map<int,SDL_Rect>> BoundingBoxes;
-    SDL_Rect currentBoundingBox;
+    std::unordered_map<std::string, std::unordered_map<int,SDL_Rect>> boundingBoxes;
+    //SDL_Rect currentBoundingBox;
 };

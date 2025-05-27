@@ -1,5 +1,5 @@
 sprite:
-  image: Unarmed_Walk_full.png
+  image: res/Unarmed_Walk_full.png
   frameWidth: 64
   frameHeight: 64
   frameTime: 120
@@ -7,7 +7,7 @@ sprite:
     walk_down:
       row: 0
       frames: 6
-      collisionRects:
+      BoundingBoxes:
         - cx: 25
           cy: 23
           cw: 13
@@ -36,7 +36,7 @@ sprite:
     walk_left:
       row: 1
       frames: 6
-      collisionRects:
+      BoundingBoxes:
         - cx: 26
           cy: 22
           cw: 12
@@ -65,7 +65,7 @@ sprite:
     walk_right:
       row: 2
       frames: 6
-      collisionRects:
+      BoundingBoxes:
         - cx: 26
           cy: 22
           cw: 12
@@ -94,7 +94,7 @@ sprite:
     walk_up:
       row: 3
       frames: 6
-      collisionRects:
+      BoundingBoxes:
         - cx: 25
           cy: 22
           cw: 13

@@ -5,7 +5,7 @@
       "name": "(gdb) Attach",
       "type": "cppdbg",
       "request": "attach",
-      "program": "/mnt/store/dev/src/c/sdl/Sprites/mygame",
+      "program": "mygame",
       
       "MIMode": "gdb",
       "setupCommands": [
