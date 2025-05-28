@@ -2,6 +2,7 @@
 #include <catch2/catch.hpp>
 #include "../src/TileMapper.hpp"
 #include "../src/Tilesheet.hpp"
+#include "../src/Renderer.cpp"
 
 TEST_CASE("TileMapper loads tilemap data from YAML") {
     auto tilemapData = TileMapper::loadTilemapData("../res/tilemap.yaml");
@@ -22,23 +23,21 @@ TEST_CASE("TileMapper loads tilesheet data from YAML") {
     REQUIRE(!tilesheetData.getTiles().empty());
 }
 
-// TODO: Test this
-TEST_CASE("TileMapper loads tilesheet data from YAML") {
+
+TEST_CASE("Render Tilemap") {
     auto rend = Renderer::init();
     
     auto tilesheet = Tilesheet::createFromYaml("../res/tilesheet.yaml");
     auto tilemapData = TileMapper::loadTilemapData("../res/tilemap.yaml");
     auto layerDim = SDL_Point{800, 600}; // Example dimensions  
     auto layer = TileMapper::renderTilemap(layerDim, tilesheet, tilemapData);
-    CAPTURE(layer);
     REQUIRE(layer != nullptr);
     REQUIRE(SDL_QueryTexture(layer, nullptr, nullptr, &layerDim.x, &layerDim.y) == 0);
 
-    Renderer::draw();
-    Renderer::dump_screen("../res/screenshot.png");
+    Renderer::addToRenderList(new GraphicsObject{layer, SDL_Rect{0, 0, layerDim.x, layerDim.y}});
 
+    Renderer::draw(true);
+    SDL_Event e;
     SDL_DestroyTexture(layer);
-
-
     Renderer::destroy();
 }

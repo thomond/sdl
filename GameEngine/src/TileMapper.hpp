@@ -45,7 +45,7 @@ public:
                 const Tilesheet::Tile* tile = tilesheet.getTypeInfo(id);
                 if (tile) {
                     SDL_Rect srcRect = { tile->frame.x * tile->frame.w, tile->frame.y * tile->frame.h, tile->frame.w, tile->frame.h }; // Get the source rectangle from the tilesheet
-                    SDL_Rect destRect = { point.x * tile->frame.x, point.y * tile->frame.y, tile->frame.w, tile->frame.h };// Convert to global coordinates
+                    SDL_Rect destRect = { point.x * tile->frame.w, point.y * tile->frame.h, tile->frame.w, tile->frame.h };// Convert to global coordinates
                     SDL_RenderCopy(r, tilesheetTex, &srcRect, &destRect);
                 }
             }
@@ -56,6 +56,7 @@ public:
 
         return layer;
     }
+
 
     // Load tilemap data from a YAML file
     static std::list<TilemapDataItem> loadTilemapData(std::string yamlPath) {
